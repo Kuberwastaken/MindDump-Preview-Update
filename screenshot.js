@@ -42,8 +42,7 @@ const puppeteer = require('puppeteer');
 
     await page.screenshot({ 
       path: 'screenshot.png', 
-      fullPage: true,
-      quality: 100
+      fullPage: true
     });
 
   } catch (error) {
