@@ -13,8 +13,7 @@ const puppeteer = require('puppeteer');
   await page.goto('https://kuberwastaken.github.io/blog/', { waitUntil: 'networkidle2' });
   
   // Wait 5 seconds for dynamic content to load
-  await page.waitFor(5000);
-  // Alternatively, you can use:
+  await new Promise(resolve => setTimeout(resolve, 5000));
 
   // Capture the full-page screenshot
   await page.screenshot({ path: 'screenshot.png', fullPage: true });
