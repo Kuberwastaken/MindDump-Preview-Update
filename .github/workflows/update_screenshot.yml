@@ -28,10 +28,12 @@ jobs:
       - name: Capture screenshot
         run: node screenshot.js
 
-      - name: Commit updated screenshot
+        - name: Commit updated screenshot
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git add screenshot.png
           git commit -m "Daily: update screenshot [skip screenshot]" || echo "No changes to commit"
+          # Set remote URL with authentication token for pushing
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push
