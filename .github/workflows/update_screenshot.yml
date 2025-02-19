@@ -2,11 +2,15 @@ name: Update Screenshot
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Time in UTC
-  workflow_dispatch:    # Allows manual triggering
+    - cron: '0 0 * * *'  # Runs daily at midnight UTC
+  push:
+    branches:
+      - main
 
 jobs:
   screenshot:
+    # Skip the job if the push commit message contains "[skip screenshot]"
+    if: github.event_name != 'push' || (github.event_name == 'push' && !contains(github.head_commit.message, '[skip screenshot]'))
     runs-on: ubuntu-latest
 
     steps:
@@ -29,5 +33,5 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git add screenshot.png
-          git commit -m "Daily: update screenshot" || echo "No changes to commit"
+          git commit -m "Daily: update screenshot [skip screenshot]" || echo "No changes to commit"
           git push
