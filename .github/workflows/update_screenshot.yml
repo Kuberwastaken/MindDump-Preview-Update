@@ -1,0 +1,33 @@
+name: Update Screenshot
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Time in UTC
+  workflow_dispatch:    # Allows manual triggering
+
+jobs:
+  screenshot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install Puppeteer
+        run: npm install puppeteer
+
+      - name: Capture screenshot
+        run: node screenshot.js
+
+      - name: Commit updated screenshot
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git add screenshot.png
+          git commit -m "Daily: update screenshot" || echo "No changes to commit"
+          git push
